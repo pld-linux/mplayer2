@@ -52,6 +52,9 @@
 %bcond_with	system_ffmpeg	# use ffmpeg-devel, rather bundled sources (likely needs ffmpeg from same svn revision than mplayer)
 %bcond_with	on2		# with patches from On2 Flix Engine for Linux
 
+%bcond_with	nonfree		# non free options of package
+%bcond_without	va		# VAAPI (Video Acceleration API)
+%bcond_without	vpx		# VP8, a high-quality video codec
 
 %if %{_lib} == "lib64"
 %define		_suf	64
@@ -224,7 +227,58 @@ escolhidos, incluindo SDL, SVGALib, frame buffer, aalib, X11 e outros.
 %prep
 %setup -q -n %{name}
 
-echo "	--prefix=%{_prefix} " >>mplayer_options
+# set ffmpeg options:
+echo "	--arch=%{_target_base_arch}" >>ffmpeg_options
+#echo "	--prefix=%{_prefix}" >>ffmpeg_options
+#echo "	--libdir=%{_libdir}" >>ffmpeg_options
+#echo "	--shlibdir=%{_libdir}" >>ffmpeg_options
+#echo "	--mandir=%{_mandir}" >>ffmpeg_options
+echo "	--cc="%{__cc}"" >>ffmpeg_options
+echo "	--extra-cflags="-D_GNU_SOURCE=1 %{rpmcppflags} %{rpmcflags}"" >>ffmpeg_options
+echo "	--extra-ldflags="%{rpmcflags} %{rpmldflags}"" >>ffmpeg_options
+echo "	--disable-debug" >>ffmpeg_options
+echo "	--disable-optimizations" >>ffmpeg_options
+echo "	--disable-stripping" >>ffmpeg_options
+echo "	--enable-avfilter" >>ffmpeg_options
+echo "	--enable-gpl" >>ffmpeg_options
+echo "	--enable-version3" >>ffmpeg_options
+echo "	--enable-libdc1394" >>ffmpeg_options
+echo "	--enable-libdirac" >>ffmpeg_options
+#echo "	--enable-libfaad" >>ffmpeg_options
+#echo "	--enable-libfaadbin" >>ffmpeg_options
+# no libgsm-devel
+#echo "	--enable-libgsm" >>ffmpeg_options 
+echo "	--enable-libmp3lame" >>ffmpeg_options
+echo "	--enable-libschroedinger" >>ffmpeg_options
+echo "	--enable-libspeex" >>ffmpeg_options
+echo "	--enable-libtheora" >>ffmpeg_options
+echo "	--enable-libvorbis" >>ffmpeg_options
+echo "	%{?with_vpx:--enable-libvpx}" >>ffmpeg_options
+# x264 >= 0.99
+#echo "	--enable-libx264" >>ffmpeg_options
+echo "	--enable-libxvid" >>ffmpeg_options
+echo "	--enable-libopencore-amrnb" >>ffmpeg_options
+echo "	--enable-libopencore-amrwb" >>ffmpeg_options
+echo "	--enable-libopenjpeg" >>ffmpeg_options
+echo "	--enable-postproc" >>ffmpeg_options
+echo "	--enable-pthreads" >>ffmpeg_options
+echo "	--enable-swscale" >>ffmpeg_options
+echo "	--enable-vdpau" >>ffmpeg_options
+echo "	--enable-x11grab" >>ffmpeg_options
+%ifnarch %{ix86} %{x8664}
+echo "	--disable-mmx" >>ffmpeg_options
+%endif
+%ifarch i386 i486
+echo "	--disable-mmx" >>ffmpeg_options
+%endif
+%if %{with nonfree}
+echo "	--enable-nonfree" >>ffmpeg_options
+echo "	--enable-libfaac" >>ffmpeg_options
+%endif
+echo "	--enable-runtime-cpudetect" >>ffmpeg_options
+
+# set mplayer options:
+echo "	--prefix=%{_prefix}" >>mplayer_options
 echo "	--confdir=%{_sysconfdir}/mplayer" >>mplayer_options
 echo "	--cc="%{__cc}"" >>mplayer_options
 echo "	--extra-cflags="$CFLAGS"" >>mplayer_options
