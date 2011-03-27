@@ -172,6 +172,9 @@ escolhidos, incluindo SDL, SVGALib, frame buffer, aalib, X11 e outros.
 %prep
 %setup -q -n %{name}
 
+echo "--prefix=%{_prefix}" >>mplayer_options
+echo "--enable-runtime-cpudetection" >>mplayer_options
+
 cat mplayer/etc/example.conf > mplayer/etc/mplayer.conf
 cat <<'CONFIGADD' >> mplayer/etc/mplayer.conf
 
@@ -198,91 +201,24 @@ CONFIGADD
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d \
-	$RPM_BUILD_ROOT{%{_bindir},%{_pixmapsdir},%{_sysconfdir}/mplayer} \
-	$RPM_BUILD_ROOT%{_mandir}/{cs,de,es,fr,hu,it,pl,sv,zh_CN,}/man1 \
-	$RPM_BUILD_ROOT%{_datadir}/%{name}/skins \
-	$RPM_BUILD_ROOT%{_desktopdir}
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_pixmapsdir},%{_sysconfdir}/mplayer} 
 
+%{__make} install DESTDIR=$RPM_BUILD_ROOT
+
+mv -f $RPM_BUILD_ROOT%{_bindir}/{mplayer,%{name}}
 # default config files
-install mplayer/etc/{codecs,mplayer%{?with_osd:,menu},input}.conf $RPM_BUILD_ROOT%{_sysconfdir}/mplayer
-
-# executables
-install mplayer $RPM_BUILD_ROOT%{_bindir}/mplayer%{_suf}
-ln -sf mplayer%{_suf} $RPM_BUILD_ROOT%{_bindir}/mplayer
-
-%if %{with shared}
-install -d $RPM_BUILD_ROOT%{_libdir}
-install libmplayer.so $RPM_BUILD_ROOT%{_libdir}
-%endif
+#install mplayer/etc/{codecs,mplayer%{?with_osd:,menu},input}.conf $RPM_BUILD_ROOT%{_sysconfdir}/mplayer
 
 # fonts
-cp -r font-* $RPM_BUILD_ROOT%{_datadir}/mplayer
-ln -sf font-arial-iso-8859-2/font-arial-24-iso-8859-2 $RPM_BUILD_ROOT%{_datadir}/mplayer/font
+#cp -r font-* $RPM_BUILD_ROOT%{_datadir}/mplayer
+#ln -sf font-arial-iso-8859-2/font-arial-24-iso-8859-2 $RPM_BUILD_ROOT%{_datadir}/mplayer/font
 
-%if %{with gui}
-install %{SOURCE5} $RPM_BUILD_ROOT%{_desktopdir}
-%endif
-touch $RPM_BUILD_ROOT%{_datadir}/%{name}/skins/default
-install %{SOURCE8} $RPM_BUILD_ROOT%{_desktopdir}
-install %{SOURCE7} $RPM_BUILD_ROOT%{_pixmapsdir}
-
-# man pages
-install DOCS/man/cs/*.1 $RPM_BUILD_ROOT%{_mandir}/cs/man1
-install DOCS/man/de/*.1 $RPM_BUILD_ROOT%{_mandir}/de/man1
-install DOCS/man/en/*.1 $RPM_BUILD_ROOT%{_mandir}/man1
-install DOCS/man/es/*.1 $RPM_BUILD_ROOT%{_mandir}/es/man1
-install DOCS/man/fr/*.1 $RPM_BUILD_ROOT%{_mandir}/fr/man1
-install DOCS/man/hu/*.1 $RPM_BUILD_ROOT%{_mandir}/hu/man1
-install DOCS/man/it/*.1 $RPM_BUILD_ROOT%{_mandir}/it/man1
-install DOCS/man/pl/*.1 $RPM_BUILD_ROOT%{_mandir}/pl/man1
-#install DOCS/man/sv/*.1 $RPM_BUILD_ROOT%{_mandir}/sv/man1
-#install DOCS/man/zh/*.1 $RPM_BUILD_ROOT%{_mandir}/zh_CN/man1
+#install %{SOURCE8} $RPM_BUILD_ROOT%{_desktopdir}
+#install %{SOURCE7} $RPM_BUILD_ROOT%{_pixmapsdir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/mplayer*
-
-
-#% files common
-%defattr(644,root,root,755)
-%doc DOCS/tech
-%{?with_shared:%attr(755,root,root) %{_libdir}/libmplayer.so}
-%if %{with win32}
-%doc etc/codecs.win32.conf
-%endif
-%if %{with doc}
-# HTML and XML-generated docs
-%doc DOCS/HTML/en
-%lang(cs) %doc DOCS/HTML/cs
-%lang(de) %doc DOCS/HTML/de
-%lang(es) %doc DOCS/HTML/es
-%lang(fr) %doc DOCS/HTML/fr
-%lang(hu) %doc DOCS/HTML/hu
-%lang(pl) %doc DOCS/HTML/pl
-%lang(ru) %doc DOCS/HTML/ru
-#%lang(zh_CN) %doc DOCS/zh
-%endif
-%doc AUTHORS README
-
-%dir %{_sysconfdir}/%{name}
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/*.conf
-%{_mandir}/man1/*
-%lang(cs) %{_mandir}/cs/man1/*
-%lang(de) %{_mandir}/de/man1/*
-%lang(es) %{_mandir}/es/man1/*
-%lang(fr) %{_mandir}/fr/man1/*
-%lang(hu) %{_mandir}/hu/man1/*
-%lang(it) %{_mandir}/it/man1/*
-%lang(pl) %{_mandir}/pl/man1/*
-#%lang(sv) %{_mandir}/sv/man1/*
-#%lang(zh_CN) %{_mandir}/zh_CN/man1/*
-%{_desktopdir}/mplayer.desktop
-%{_pixmapsdir}/mplayer.png
-%dir %{_datadir}/%{name}
-%{_datadir}/%{name}/font*
-%dir %{_datadir}/%{name}/skins
-%ghost %{_datadir}/%{name}/skins/default
+%attr(755,root,root) %{_bindir}/%{name}
