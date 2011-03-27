@@ -1,4 +1,57 @@
 #
+%bcond_with	directfb	# with DirectFB video output
+%bcond_with	dxr3		# enable use of DXR3/H+ hardware MPEG decoder
+%bcond_with	ggi		# with ggi video output
+%bcond_with	nas		# with NAS audio output
+%bcond_with	svga		# with svgalib video output
+%bcond_without	osd		# with osd menu support
+%bcond_without	altivec		# without altivec support
+%bcond_without	x264		# without x264 support
+%bcond_with	xmms		# with XMMS inputplugin support
+%bcond_without	aalib		# without aalib video output
+%bcond_without	jack		# without JACKD support
+%bcond_without	alsa		# without ALSA audio output
+%bcond_with	arts		# with arts audio output
+%bcond_without	caca		# without libcaca video output
+%bcond_without	cdparanoia	# without cdparanoia support
+%bcond_without	dvdnav		# without dvdnav support
+%bcond_without	enca		# disable using ENCA charset oracle library
+%bcond_with	esd		# enable EsounD sound support
+%bcond_without	faad		# disable FAAD2 (AAC) support
+%bcond_without	gif		# disable GIF support
+%bcond_without	gui		# without GTK+ GUI
+%bcond_without	joystick	# disable joystick support
+%bcond_without	libdts		# disable libdts support
+%bcond_without	libdv		# disable libdv en/decoding support
+%bcond_without	lirc		# without lirc support
+%bcond_without	live		# without LIVE555 libraries
+%bcond_without	lzo		# with LZO support (requires lzo 2.x)
+%bcond_without	mad		# without mad (audio MPEG) support
+%bcond_without	pulseaudio	# without pulseaudio output
+%bcond_without	quicktime	# without binary quicktime dll support
+%bcond_without	real		# without Real* 8/9 codecs support
+%bcond_without	runtime		# disable runtime cpu detection, just detect CPU
+				#  in compile time (advertised by mplayer authors as working faster); in this case
+				#  mplayer may not work on machine other then where it was compiled
+%bcond_without	select		# disable audio select() support (for example required this option ALSA or Vortex2 driver)
+%bcond_without	smb		# disable Samba (SMB) input support
+%bcond_without	theora		# without theora support
+%bcond_without	win32		# without win32 codecs support
+%bcond_without	vdpau		# disable vdpau
+%bcond_without	vidix		# disable vidix
+%bcond_without	vorbis		# without Ogg-Vorbis audio support
+%bcond_with	system_vorbis	# use system libvorbis instead of internal tremor
+%bcond_without	xvid		# disable XviD codec
+%bcond_without	mencoder	# disable mencoder (a/v encoder) compilation
+%bcond_without	sdl		# disable SDL
+%bcond_without	doc		# don't build docs (slow)
+%bcond_with	shared		# experimental libmplayer.so support
+%bcond_without	amr		# enable Adaptive Multi Rate (AMR) speech codec support
+%bcond_without	gnomess		# disable controling gnome screensaver
+%bcond_without	ssse3		# sse3 optimizations (needs binutils >= 2.16.92)
+%bcond_with	system_ffmpeg	# use ffmpeg-devel, rather bundled sources (likely needs ffmpeg from same svn revision than mplayer)
+%bcond_with	on2		# with patches from On2 Flix Engine for Linux
+
 
 %if %{_lib} == "lib64"
 %define		_suf	64
@@ -94,7 +147,6 @@ BuildRequires:	xorg-lib-libXv-devel
 BuildRequires:	xorg-lib-libXvMC-devel
 BuildRequires:	xorg-lib-libXxf86dga-devel
 BuildRequires:	xorg-lib-libXxf86vm-devel
-Requires:	%{name}-common = %{epoch}:%{version}-%{release}
 Requires:	OpenGL
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -172,8 +224,94 @@ escolhidos, incluindo SDL, SVGALib, frame buffer, aalib, X11 e outros.
 %prep
 %setup -q -n %{name}
 
-echo "--prefix=%{_prefix}" >>mplayer_options
-echo "--enable-runtime-cpudetection" >>mplayer_options
+echo "	--prefix=%{_prefix} " >>mplayer_options
+echo "	--confdir=%{_sysconfdir}/mplayer" >>mplayer_options
+echo "	--cc="%{__cc}"" >>mplayer_options
+echo "	--extra-cflags="$CFLAGS"" >>mplayer_options
+#echo "	--real-ldflags="%{rpmldflags}"" >>mplayer_options
+echo "	--extra-ldflags="%{?_x_libraries:-L%{_x_libraries}}"" >>mplayer_options
+%if %{with system_ffmpeg}
+echo "	--disable-libavutil_a" >>mplayer_options
+echo "	--disable-libavcodec_a" >>mplayer_options
+echo "	--disable-libavformat_a" >>mplayer_options
+echo "	--disable-libpostproc_a" >>mplayer_options
+echo "	--enable-libavutil_so" >>mplayer_options
+echo "	--enable-libavcodec_so" >>mplayer_options
+echo "	--enable-libavformat_so" >>mplayer_options
+echo "	--enable-libpostproc_so" >>mplayer_options
+%endif
+%ifnarch %{ix86} %{x8664}
+echo "	--disable-mmx" >>mplayer_options
+echo "	--disable-mmxext" >>mplayer_options
+echo "	--disable-3dnow" >>mplayer_options
+echo "	--disable-3dnowext" >>mplayer_options
+echo "	--disable-sse" >>mplayer_options
+echo "	--disable-sse2" >>mplayer_options
+echo "	--disable-fastmemcpy" >>mplayer_options
+%endif
+echo "	%{__disable ssse3}" >>mplayer_options
+#echo "	%{__enable_disable amr libopencore_amrnb} %{__enable_disable amr libopencore_amrwb}" >>mplayer_options
+echo "	%{__enable_disable directfb}" >>mplayer_options
+echo "	%{__disable dxr3}" >>mplayer_options
+echo "	%{__disable ggi}" >>mplayer_options
+echo "	%{__disable live}" >>mplayer_options
+echo "	%{__disable lzo liblzo}" >>mplayer_options
+echo "	%{__disable nas}" >>mplayer_options
+echo "	%{__disable svga}" >>mplayer_options
+echo "	%{__disable aalib aa}" >>mplayer_options
+echo "	%{__disable jack}" >>mplayer_options
+echo "	%{__enable_disable alsa}" >>mplayer_options
+echo "	%{__disable arts}" >>mplayer_options
+echo "	%{__disable caca}" >>mplayer_options
+echo "	%{__disable cdparanoia}" >>mplayer_options
+echo "	%{__disable enca}" >>mplayer_options
+echo "	%{__disable esd}" >>mplayer_options
+echo "	%{__disable faad}" >>mplayer_options
+echo "	%{__disable gif}" >>mplayer_options
+echo "	%{__enable joystick}" >>mplayer_options
+echo "	%{__disable libdv}" >>mplayer_options
+echo "	%{__disable libdts libdca}" >>mplayer_options
+echo "	%{__enable_disable lirc}" >>mplayer_options
+echo "	%{__disable mad}" >>mplayer_options
+echo "	%{__disable pulseaudio pulse}" >>mplayer_options
+echo "	%{__disable quicktime qtx}" >>mplayer_options
+echo "	%{__disable real}" >>mplayer_options
+echo "	%{__enable_disable runtime runtime-cpudetection}" >>mplayer_options
+echo "	%{__disable select}" >>mplayer_options
+echo "	%{__disable smb}" >>mplayer_options
+echo "	%{__disable win32 win32dll}" >>mplayer_options
+echo "	%{__disable vorbis tremor-internal} --disable-tremor %{__disable vorbis libvorbis}" >>mplayer_options
+echo "	%{__disable_if system_vorbis tremor-internal}" >>mplayer_options
+echo "	%{__enable osd menu}" >>mplayer_options
+echo "	%{__disable theora}" >>mplayer_options
+echo "	%{__disable x264}" >>mplayer_options
+echo "	%{?with_xmms:--enable-xmms --with-xmmsplugindir=%{_libdir}/xmms/Input --with-xmmslibdir=%{_libdir}}" >>mplayer_options
+echo "	%{__disable xvid}" >>mplayer_options
+echo "	%{__disable vidix}" >>mplayer_options
+echo "	%{__disable vdpau}" >>mplayer_options
+echo "	%{__disable mencoder}" >>mplayer_options
+echo "	--enable-dga1" >>mplayer_options
+echo "	--enable-dga2" >>mplayer_options
+echo "	%{__enable_disable dvdnav}" >>mplayer_options
+echo "	--enable-fbdev" >>mplayer_options
+echo "	--enable-gl" >>mplayer_options
+echo "	--enable-mga" >>mplayer_options
+echo "	--enable-radio" >>mplayer_options
+echo "	--enable-radio-capture" >>mplayer_options
+echo "	%{__enable_disable sdl}" >>mplayer_options
+echo "	--enable-tdfxfb" >>mplayer_options
+echo "	--enable-vm" >>mplayer_options
+echo "	--enable-x11" >>mplayer_options
+echo "	--enable-xmga" >>mplayer_options
+echo "	--enable-xv" >>mplayer_options
+echo "	--enable-xvmc" >>mplayer_options
+echo "	--with-xvmclib=XvMCW" >>mplayer_options
+#echo "	--enable-zr" >>mplayer_options
+echo "	--enable-unrarexec" >>mplayer_options
+echo "	--enable-dynamic-plugins" >>mplayer_options
+echo "	--enable-largefiles" >>mplayer_options
+echo "	--language=all" >>mplayer_options
+echo "	--codecsdir=%{_libdir}/codecs" >>mplayer_options
 
 cat mplayer/etc/example.conf > mplayer/etc/mplayer.conf
 cat <<'CONFIGADD' >> mplayer/etc/mplayer.conf
