@@ -263,9 +263,9 @@ echo "	--enable-x11grab" >>ffmpeg_options
 %ifnarch %{ix86} %{x8664}
 echo "	--disable-mmx" >>ffmpeg_options
 %endif
-%ifarch i386 i486
-echo "	--disable-mmx" >>ffmpeg_options
-%endif
+#% ifarch i386 i486
+#echo "	--disable-mmx" >>ffmpeg_options
+#% endif
 %if %{with nonfree}
 echo "	--enable-nonfree" >>ffmpeg_options
 echo "	--enable-libfaac" >>ffmpeg_options
