@@ -118,8 +118,9 @@ BuildRequires:	libpng-devel
 %{?with_smb:BuildRequires:	libsmbclient-devel}
 %{?with_theora:BuildRequires:	libtheora-devel}
 %{?with_vdpau:BuildRequires:	libvdpau-devel}
+%{?with_vpx:BuildRequires:	libvpx-devel >= 0.9.1}
 %{?with_system_vorbis:BuildRequires:	libvorbis-devel}
-%{?with_x264:BuildRequires:	libx264-devel >= 0.1.3}
+%{?with_x264:BuildRequires:	libx264-devel >= 0.1.3-1.20110327}
 BuildRequires:	libxslt-progs
 %{?with_lirc:BuildRequires:	lirc-devel}
 %{?with_live:BuildRequires:	live-devel}
