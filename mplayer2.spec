@@ -45,7 +45,6 @@
 %bcond_without	mencoder	# disable mencoder (a/v encoder) compilation
 %bcond_without	sdl		# disable SDL
 %bcond_without	doc		# don't build docs (slow)
-%bcond_with	shared		# experimental libmplayer.so support
 %bcond_without	amr		# enable Adaptive Multi Rate (AMR) speech codec support
 %bcond_without	gnomess		# disable controling gnome screensaver
 %bcond_without	ssse3		# sse3 optimizations (needs binutils >= 2.16.92)
@@ -229,10 +228,6 @@ escolhidos, incluindo SDL, SVGALib, frame buffer, aalib, X11 e outros.
 
 # set ffmpeg options:
 echo "	--arch=%{_target_base_arch}" >>ffmpeg_options
-#echo "	--prefix=%{_prefix}" >>ffmpeg_options
-#echo "	--libdir=%{_libdir}" >>ffmpeg_options
-#echo "	--shlibdir=%{_libdir}" >>ffmpeg_options
-#echo "	--mandir=%{_mandir}" >>ffmpeg_options
 echo "	--cc="%{__cc}"" >>ffmpeg_options
 echo "	--extra-cflags="-D_GNU_SOURCE=1 %{rpmcppflags} %{rpmcflags}"" >>ffmpeg_options
 echo "	--extra-ldflags="%{rpmcflags} %{rpmldflags}"" >>ffmpeg_options
@@ -254,8 +249,8 @@ echo "	--enable-libspeex" >>ffmpeg_options
 echo "	--enable-libtheora" >>ffmpeg_options
 echo "	--enable-libvorbis" >>ffmpeg_options
 echo "	%{?with_vpx:--enable-libvpx}" >>ffmpeg_options
-# x264 >= 0.99
-#echo "	--enable-libx264" >>ffmpeg_options
+# x264 API >= 0.99
+echo "	--enable-libx264" >>ffmpeg_options
 echo "	--enable-libxvid" >>ffmpeg_options
 echo "	--enable-libopencore-amrnb" >>ffmpeg_options
 echo "	--enable-libopencore-amrwb" >>ffmpeg_options
