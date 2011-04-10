@@ -217,7 +217,7 @@ MPlayer é um reprodutor de filmes que suporta vários codecs de vídeo e
 escolhidos, incluindo SDL, SVGALib, frame buffer, aalib, X11 e outros.
 
 %prep
-%setup -q -n %{name}
+%setup -q -n %{name}-build-%{version}
 
 # set ffmpeg options:
 echo "	--arch=%{_target_base_arch}" >>ffmpeg_options
