@@ -55,14 +55,6 @@
 %bcond_without	va		# VAAPI (Video Acceleration API)
 %bcond_without	vpx		# VP8, a high-quality video codec
 
-%if %{_lib} == "lib64"
-%define		_suf	64
-%else
-%define		_suf	32
-%endif
-
-%define		subver	rc2
-%define		rel	1
 Summary:	MPlayer - THE Movie Player for UN*X
 Summary(de.UTF-8):	MPlayer ist ein unter der freien GPL-Lizenz stehender Media-Player
 Summary(es.UTF-8):	Otro reproductor de películas
@@ -71,11 +63,11 @@ Summary(pl.UTF-8):	Odtwarzacz filmów dla systemów uniksowych
 Summary(pt_BR.UTF-8):	Reprodutor de filmes
 Name:		mplayer2
 Version:	2.0
-Release:	0.%{subver}.%{rel}
+Release:	0.1
 License:	GPL
 Group:		Applications/Multimedia
-Source0:	http://ftp.mplayer2.org/pub/release/%{name}-build-%{version}-%{subver}.tar.xz
-# Source0-md5:	92793d629181e059384c43972fa9a701
+Source0:	http://ftp.mplayer2.org/pub/release/%{name}-build-%{version}.tar.xz
+# Source0-md5:	05b93784de995235e2758f182de15f73
 URL:		http://www.mplayer2.org/
 BuildRequires:	OpenAL-devel
 BuildRequires:	OpenGL-devel
