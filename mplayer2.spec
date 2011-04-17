@@ -63,7 +63,7 @@ Summary(pl.UTF-8):	Odtwarzacz filmów dla systemów uniksowych
 Summary(pt_BR.UTF-8):	Reprodutor de filmes
 Name:		mplayer2
 Version:	2.0
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/Multimedia
 Source0:	http://ftp.mplayer2.org/pub/release/%{name}-build-%{version}.tar.xz
@@ -95,7 +95,6 @@ BuildRequires:	tar >= 1:1.22
 %{?with_gif:BuildRequires:	giflib-devel}
 %{?with_gui:BuildRequires:	gtk+2-devel}
 %{?with_jack:BuildRequires:	jack-audio-connection-kit-devel}
-%{?with_jack:%requires_eq	jack-audio-connection-kit-libs}
 BuildRequires:	lame-libs-devel
 %{?with_caca:BuildRequires:	libcaca-devel}
 %{?with_libdts:BuildRequires:	libdts-devel}
