@@ -97,6 +97,7 @@ BuildRequires:	tar >= 1:1.22
 %{?with_jack:BuildRequires:	jack-audio-connection-kit-devel}
 BuildRequires:	lame-libs-devel
 %{?with_caca:BuildRequires:	libcaca-devel}
+BuildRequires:	libdc1394-devel
 %{?with_libdts:BuildRequires:	libdts-devel}
 %{?with_libdv:BuildRequires:	libdv-devel > 0.9.5}
 %{?with_dvdnav:BuildRequires:	libdvdnav-devel >= 4.1.3}
@@ -109,6 +110,7 @@ BuildRequires:	libpng-devel
 %{?with_smb:BuildRequires:	libsmbclient-devel}
 %{?with_theora:BuildRequires:	libtheora-devel}
 %{?with_vdpau:BuildRequires:	libvdpau-devel}
+BuildRequires:	libvorbis-devel
 %{?with_vpx:BuildRequires:	libvpx-devel >= 0.9.1}
 %{?with_system_vorbis:BuildRequires:	libvorbis-devel}
 %{?with_x264:BuildRequires:	libx264-devel >= 0.1.3-1.20110327}
@@ -119,8 +121,10 @@ BuildRequires:	libxslt-progs
 %{?with_nas:BuildRequires:	nas-devel}
 BuildRequires:	ncurses-devel
 %{?with_amr:BuildRequires:	opencore-amr-devel}
+BuildRequires:	openjpeg-devel
 BuildRequires:	pkgconfig
 %{?with_pulseaudio:BuildRequires:	pulseaudio-devel >= 0.9}
+BuildRequires:	python-modules
 BuildRequires:	rpm >= 4.4.9-56
 BuildRequires:	rpmbuild(macros) >= 1.527
 BuildRequires:	schroedinger-devel
