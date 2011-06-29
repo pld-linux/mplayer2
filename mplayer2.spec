@@ -274,7 +274,7 @@ echo "	--confdir=%{_sysconfdir}/mplayer" >>mplayer_options
 echo "	--cc="%{__cc}"" >>mplayer_options
 echo "	--extra-cflags="$CFLAGS"" >>mplayer_options
 #echo "	--real-ldflags="%{rpmldflags}"" >>mplayer_options
-echo "	--extra-ldflags="%{?_x_libraries:-L%{_x_libraries}}"" >>mplayer_options
+echo "	--extra-ldflags="%{?_x_libraries:-L%{_x_libraries}} -lX11 -lXext"" >>mplayer_options
 %if %{with system_ffmpeg}
 echo "	--disable-libavutil_a" >>mplayer_options
 echo "	--disable-libavcodec_a" >>mplayer_options
