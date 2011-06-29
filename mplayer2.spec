@@ -63,7 +63,7 @@ Summary(pl.UTF-8):	Odtwarzacz filmów dla systemów uniksowych
 Summary(pt_BR.UTF-8):	Reprodutor de filmes
 Name:		mplayer2
 Version:	2.0
-Release:	3
+Release:	4
 License:	GPL
 Group:		Applications/Multimedia
 Source0:	http://ftp.mplayer2.org/pub/release/%{name}-build-%{version}.tar.xz
