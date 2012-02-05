@@ -266,7 +266,7 @@ echo "	--disable-mmx" >>ffmpeg_options
 echo "	--enable-nonfree" >>ffmpeg_options
 echo "	--enable-libfaac" >>ffmpeg_options
 %endif
-echo "	--enable-runtime-cpudetect" >>ffmpeg_options
+echo "	%{__enable_disable runtime runtime-cpudetect}" >>ffmpeg_options
 
 # set mplayer options:
 echo "	--prefix=%{_prefix}" >>mplayer_options
