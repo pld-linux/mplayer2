@@ -225,7 +225,7 @@ escolhidos, incluindo SDL, SVGALib, frame buffer, aalib, X11 e outros.
 # set ffmpeg options:
 echo "	--arch=%{_target_base_arch}" >>ffmpeg_options
 echo "	--cc="%{__cc}"" >>ffmpeg_options
-echo "	--extra-cflags="-D_GNU_SOURCE=1 %{rpmcppflags} %{rpmcflags}"" >>ffmpeg_options
+echo "	--extra-cflags="-D_GNU_SOURCE=1 %{rpmcppflags} %{rpmcflags} -I/usr/include/openjpeg-1.5"" >>ffmpeg_options
 echo "	--extra-ldflags="%{rpmcflags} %{rpmldflags}"" >>ffmpeg_options
 echo "	--disable-debug" >>ffmpeg_options
 echo "	--disable-optimizations" >>ffmpeg_options
