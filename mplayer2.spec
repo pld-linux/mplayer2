@@ -24,7 +24,7 @@
 %bcond_without	libdts		# disable libdts support
 %bcond_without	libdv		# disable libdv en/decoding support
 %bcond_without	lirc		# without lirc support
-%bcond_without	live		# without LIVE555 libraries
+%bcond_with	live		# without LIVE555 libraries
 %bcond_without	lzo		# with LZO support (requires lzo 2.x)
 %bcond_without	mad		# without mad (audio MPEG) support
 %bcond_without	pulseaudio	# without pulseaudio output
@@ -68,6 +68,7 @@ License:	GPL
 Group:		Applications/Multimedia
 Source0:	http://ftp.mplayer2.org/pub/release/%{name}-build-%{version}.tar.xz
 # Source0-md5:	05b93784de995235e2758f182de15f73
+Patch0:		format-security.patch
 URL:		http://www.mplayer2.org/
 BuildRequires:	OpenAL-devel
 BuildRequires:	OpenGL-devel
@@ -221,6 +222,7 @@ escolhidos, incluindo SDL, SVGALib, frame buffer, aalib, X11 e outros.
 
 %prep
 %setup -q -n %{name}-build-%{version}
+%patch0 -p1
 
 # set ffmpeg options:
 echo "	--arch=%{_target_base_arch}" >>ffmpeg_options
