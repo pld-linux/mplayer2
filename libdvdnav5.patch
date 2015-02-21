@@ -1,0 +1,64 @@
+--- mplayer2-build-2.0/mplayer/stream/stream_dvdnav.c~	2011-03-24 22:40:29.000000000 +0100
++++ mplayer2-build-2.0/mplayer/stream/stream_dvdnav.c	2015-02-21 22:34:41.917000614 +0100
+@@ -708,17 +708,17 @@
+ 
+ static int mp_dvdnav_get_aid_from_format (stream_t *stream, int index, uint8_t lg) {
+   dvdnav_priv_t * priv = stream->priv;
+-  uint8_t format;
++  uint16_t format;
+ 
+   format = dvdnav_audio_stream_format(priv->dvdnav, lg);
+   switch(format) {
+-  case DVDNAV_FORMAT_AC3:
++  case DVD_AUDIO_FORMAT_AC3:
+     return index + 128;
+-  case DVDNAV_FORMAT_DTS:
++  case DVD_AUDIO_FORMAT_DTS:
+     return index + 136;
+-  case DVDNAV_FORMAT_LPCM:
++  case DVD_AUDIO_FORMAT_LPCM:
+     return index + 160;
+-  case DVDNAV_FORMAT_MPEGAUDIO:
++  case DVD_AUDIO_FORMAT_MPEG2_EXT:
+     return index;
+   default:
+     return -1;
+--- mplayer2-build-2.0/mplayer/configure~	2011-03-24 22:40:29.000000000 +0100
++++ mplayer2-build-2.0/mplayer/configure	2015-02-21 22:42:17.340330651 +0100
+@@ -3662,7 +3662,7 @@
+ echores "$_apple_ir"
+ fi #if linux
+ 
+-echocheck "pkg-config"
++echocheck "/pkgpkg-config"
+ _pkg_config=pkg-config
+ if $($_pkg_config --version > /dev/null 2>&1); then
+   if test "$_ld_static"; then
+@@ -6643,13 +6643,13 @@
+     dvdnav_internal=yes
+     res_comment="internal"
+   else
+-    $_dvdnavconfig --version --minilibs >> $TMPLOG 2>&1 || _dvdnav=no
++    $_pkg_config --modversion dvdnav >> $TMPLOG 2>&1 || _dvdnav=no
+   fi
+ fi
+ if test "$_dvdnav" = auto ; then
+   _dvdnav=no
+-  _dvdnavdir=$($_dvdnavconfig --cflags)
+-  _dvdnavlibs=$($_dvdnavconfig --libs)
++  _dvdnavdir=$($_pkg_config --cflags dvdnav)
++  _dvdnavlibs=$($_pkg_config --libs dvdnav)
+   statement_check_broken stdint.h dvdnav/dvdnav.h 'dvdnav_t *dvd = 0' $_dvdnavdir $_dvdnavlibs $_ld_dl $_ld_pthread && _dvdnav=yes
+ fi
+ if test "$_dvdnav" = yes ; then
+@@ -6659,8 +6659,8 @@
+     cflags_libdvdnav="-Ilibdvdnav"
+     inputmodules="dvdnav(internal) $inputmodules"
+   else
+-    extra_cflags="$extra_cflags $($_dvdnavconfig --cflags)"
+-    extra_ldflags="$extra_ldflags $($_dvdnavconfig --minilibs)"
++    extra_cflags="$extra_cflags $($_pkg_config --cflags dvdnav)"
++    extra_ldflags="$extra_ldflags $($_pkg_config --libs dvdnav)"
+     inputmodules="dvdnav $inputmodules"
+   fi
+ else

@@ -63,12 +63,13 @@ Summary(pl.UTF-8):	Odtwarzacz filmów dla systemów uniksowych
 Summary(pt_BR.UTF-8):	Reprodutor de filmes
 Name:		mplayer2
 Version:	2.0
-Release:	16
+Release:	17
 License:	GPL
 Group:		Applications/Multimedia
 Source0:	http://ftp.mplayer2.org/pub/release/%{name}-build-%{version}.tar.xz
 # Source0-md5:	05b93784de995235e2758f182de15f73
 Patch0:		format-security.patch
+Patch1:		libdvdnav5.patch
 URL:		http://www.mplayer2.org/
 BuildRequires:	OpenAL-devel
 BuildRequires:	OpenGL-devel
@@ -223,6 +224,7 @@ escolhidos, incluindo SDL, SVGALib, frame buffer, aalib, X11 e outros.
 %prep
 %setup -q -n %{name}-build-%{version}
 %patch0 -p1
+%patch1 -p1
 
 # set ffmpeg options:
 echo "	--arch=%{_target_base_arch}" >>ffmpeg_options
