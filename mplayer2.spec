@@ -38,7 +38,6 @@
 %bcond_without	theora		# without theora support
 %bcond_without	win32		# without win32 codecs support
 %bcond_without	vdpau		# disable vdpau
-%bcond_without	vidix		# disable vidix
 %bcond_without	vorbis		# without Ogg-Vorbis audio support
 %bcond_with	system_vorbis	# use system libvorbis instead of internal tremor
 %bcond_without	xvid		# disable XviD codec
@@ -91,7 +90,6 @@ BuildRequires:	faac-devel
 BuildRequires:	freetype-devel >= 2.0.9
 BuildRequires:	fribidi-devel
 BuildRequires:	tar >= 1:1.22
-%{?with_vidix:BuildRequires:	vidix-devel}
 %{?with_altivec:BuildRequires:	gcc >= 5:4.1}
 %{?with_gnomess:BuildRequires:	dbus-glib-devel}
 %{?with_gif:BuildRequires:	giflib-devel}
@@ -336,7 +334,6 @@ echo "	%{__disable theora}" >>mplayer_options
 echo "	%{__disable x264}" >>mplayer_options
 echo "	%{?with_xmms:--enable-xmms --with-xmmsplugindir=%{_libdir}/xmms/Input --with-xmmslibdir=%{_libdir}}" >>mplayer_options
 echo "	%{__disable xvid}" >>mplayer_options
-echo "	%{__disable vidix}" >>mplayer_options
 echo "	%{__disable vdpau}" >>mplayer_options
 echo "	%{__disable mencoder}" >>mplayer_options
 echo "	--enable-dga1" >>mplayer_options
