@@ -221,8 +221,8 @@ escolhidos, incluindo SDL, SVGALib, frame buffer, aalib, X11 e outros.
 
 %prep
 %setup -q -n %{name}-build-%{version}
-%patch0 -p1
-%patch1 -p1
+%patch -P0 -p1
+%patch -P1 -p1
 
 # set ffmpeg options:
 echo "	--arch=%{_target_base_arch}" >>ffmpeg_options
